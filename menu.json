@@ -1,0 +1,110 @@
+[
+    {
+        "menu_id": 1,
+        "name": "Chicken Fried Rice/Noodles",
+        "price": 90,
+        "tot_quantity": 50,
+        "quantity": "200g",
+        "type": "Non-Veg",
+        "rating": 4.5
+    },
+    {
+        "menu_id": 2,
+        "name": "Egg Fried Rice/Noodles",
+        "price": 80,
+        "tot_quantity": 50,
+        "quantity": "200g",
+        "type": "Non-Veg",
+        "rating": 4.2
+    },
+    {
+        "menu_id": 3,
+        "name": "Cauliflower Fried Rice/Noodles",
+        "price": 80,
+        "tot_quantity": 50,
+        "quantity": "200g",
+        "type": "Veg",
+        "rating": 4.3
+    },
+    {
+        "menu_id": 4,
+        "name": "Mushroom Fried Rice/Noodles",
+        "price": 80,
+        "tot_quantity": 50,
+        "quantity": "200g",
+        "type": "Veg",
+        "rating": 4.4
+    },
+    {
+        "menu_id": 5,
+        "name": "Veg Fried Rice/Noodles",
+        "price": 70,
+        "tot_quantity": 50,
+        "quantity": "200g",
+        "type": "Veg",
+        "rating": 4.1
+    },
+    {
+        "menu_id": 6,
+        "name": "Egg Mushroom Gravy",
+        "price": 50,
+        "tot_quantity": 50,
+        "quantity": "150ml",
+        "type": "Non-Veg",
+        "rating": 4.6
+    },
+    {
+        "menu_id": 7,
+        "name": "Veg Mushroom Gravy",
+        "price": 40,
+        "tot_quantity": 50,
+        "quantity": "150ml",
+        "type": "Veg",
+        "rating": 4.2
+    },
+    {
+        "menu_id": 8,
+        "name": "Egg Cauliflower Gravy",
+        "price": 50,
+        "tot_quantity": 50,
+        "quantity": "150ml",
+        "type": "Non-Veg",
+        "rating": 4.5
+    },
+    {
+        "menu_id": 9,
+        "name": "Veg Cauliflower Gravy",
+        "price": 40,
+        "tot_quantity": 50,
+        "quantity": "150ml",
+        "type": "Veg",
+        "rating": 4.0
+    },
+    {
+        "menu_id": 10,
+        "name": "Egg Bhel Boori",
+        "price": 50,
+        "tot_quantity": 50,
+        "quantity": "5 pieces",
+        "type": "Non-Veg",
+        "rating": 4.3
+    },
+    {
+        "menu_id": 11,
+        "name": "Bhel Boori",
+        "price": 30,
+        "tot_quantity": 50,
+        "quantity": "5 pieces",
+        "type": "Veg",
+        "rating": 4.0
+    },
+    {
+        "menu_id": 12,
+        "name": "Masal Boori",
+        "price": 30,
+        "tot_quantity": 50,
+        "quantity": "5 pieces",
+        "type": "Veg",
+        "rating": 4.1
+    }
+]

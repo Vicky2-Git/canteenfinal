@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Canteen Food Ordering</title>
+    <link rel="stylesheet" href="login page style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Canteen Management</h1>
+    </header>
+
+    <section class="form-container">
+      <!-- New User Registration Form -->
+      <div class="form-box">
+        <h2>New User Registration</h2>
+        <form id="register-form">
+          <label for="new-username">Username</label>
+          <input type="text" id="new-username" name="username" required />
+
+          <label for="new-email">Email</label>
+          <input type="email" id="new-email" name="email" required />
+
+          <label for="new-mobile">Register Number</label>
+          <input type="tel" id="new-mobile" name="Regno" required />
+
+          <label for="new-password">Password</label>
+          <input type="password" id="new-password" name="password" required />
+
+          <label for="confirm-password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm-password"
+            name="confirm-password"
+            required
+          />
+
+          <button type="submit" class="btn">Register</button>
+          <p id="register-error" class="error-message"></p>
+        </form>
+
+        <!-- Existing User Button -->
+        <div class="existing-user">
+          <p>Existing user?</p>
+          <a href="login_page.html" class="btn-login">Login Now</a>
+        </div>
+      </div>
+    </section>
+
+    <script src="register.js"></script>
+  </body>
+</html>

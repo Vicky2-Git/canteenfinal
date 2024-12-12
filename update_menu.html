@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Manage Menu</title>
+    <link rel="stylesheet" href="admin.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>Canteen Food Ordering - Admin Dashboard</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="add_menuItem.html">Add Menu Item</a></li>
+      </ul>
+    </nav>
+
+    <div class="form-container">
+      <h2>Manage Menu</h2>
+      <table id="menuTable">
+        <thead>
+          <tr>
+            <th>Menu ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Type</th>
+            <th>Timelimit</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="menuItems">
+          <!-- Data will be inserted dynamically here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // Fetch menu items from backend and display in table
+      async function fetchMenuItems() {
+        try {
+          const response = await fetch("http://localhost:3000/menu");
+          const menuItems = await response.json();
+
+          const tableBody = document.getElementById("menuItems");
+          tableBody.innerHTML = ""; // Clear the table
+
+          menuItems.forEach((item) => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${item.menu_id}</td>
+                <td><input type="text" value="${item.item_name}" data-id="${item._id}" class="editable" data-field="name"></td>
+                <td><input type="number" value="${item.price}" data-id="${item._id}" class="editable" data-field="price"></td>
+                <td><input type="number" value="${item.stock}" data-id="${item._id}" class="editable" data-field="stock"></td>
+                <td><input type="text" value="${item.type}" data-id="${item._id}" class="editable" data-field="type"></td>
+                <td><input type="number" step="0.1" value="${item.timelimit}" data-id="${item._id}" class="editable" data-field="timelimit"></td>
+                <td><button onclick="updateMenuItem('${item._id}')">Update</button></td>
+            `;
+
+            tableBody.appendChild(row);
+          });
+        } catch (error) {
+          console.error("Error fetching menu items:", error);
+        }
+      }
+
+      // Function to update menu item
+      async function updateMenuItem(id) {
+        const inputs = document.querySelectorAll(
+          `tr td input[data-id="${id}"]`
+        );
+        const updatedData = {};
+
+        inputs.forEach((input) => {
+          updatedData[input.dataset.field] = input.value;
+        });
+
+        try {
+          const response = await fetch(
+            `http://localhost:3000/update-menu-item/${id}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(updatedData),
+            }
+          );
+
+          const updatedItem = await response.json();
+          alert(`Item updated: ${updatedItem.item_name}`);
+          fetchMenuItems(); // Refresh the table
+        } catch (error) {
+          console.error("Error updating menu item:", error);
+        }
+      }
+
+      // Fetch menu items when the page loads
+      window.onload = fetchMenuItems;
+    </script>
+  </body>
+</html>

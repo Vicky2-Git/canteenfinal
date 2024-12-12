@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Canteen Food Ordering</title>
+    <link rel="stylesheet" href="login page style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Canteen Management</h1>
+    </header>
+
+    <section class="form-container">
+      <!-- Existing User Login Form -->
+      <div class="form-box">
+        <h2>USER LOGIN</h2>
+        <form id="login-form">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required />
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required />
+
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <p>
+          Don't have a account?<a href="existing user.html" class="login-btn"
+            >SignUp</a
+          >
+        </p>
+        <p>
+          Forgot Password?<a href="updatepass.html" class="login-btn"
+            >Change password</a
+          >
+        </p>
+        <p>
+          Administrator.?<a href="adminlogin.html" class="login-btn">Login</a>
+        </p>
+        <script src="login.js"></script>
+      </div>
+    </section>
+  </body>
+</html>

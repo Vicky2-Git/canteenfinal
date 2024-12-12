@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Orders List</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 90%;
+        margin: 0 auto;
+        padding: 50px 0;
+        background-color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #ff5722;
+        margin-bottom: 20px;
+        font-size: 36px;
+      }
+
+      table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid #ddd;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #ff5722;
+        color: white;
+        font-size: 18px;
+      }
+
+      td {
+        background-color: #f9f9f9;
+        font-size: 16px;
+        color: #333;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #fafafa;
+      }
+
+      tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+        transform: scale(1.02);
+        transition: transform 0.3s ease-in-out;
+      }
+
+      /* Responsiveness */
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px;
+        }
+
+        table,
+        th,
+        td {
+          font-size: 14px;
+        }
+
+        h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Orders List</h1>
+      <table id="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Username</th>
+            <th>Item Name</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script>
+      // Fetch orders from the server
+      fetch("http://localhost:3000/orders")
+        .then((response) => response.json())
+        .then((data) => {
+          const tableBody = document.querySelector("#orders-table tbody");
+
+          data.forEach((order) => {
+            order.items.forEach((item) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${order.orderId}</td>
+                <td>${order.username}</td>
+                <td>${item.item_name}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price}</td>
+                <td>${order.totalAmount}</td>
+                <td>${new Date(order.date).toLocaleString()}</td>
+              `;
+              tableBody.appendChild(row);
+            });
+          });
+        })
+        .catch((err) => console.error("Error loading orders:", err));
+    </script>
+  </body>
+</html>

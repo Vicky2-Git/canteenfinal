@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Food Ordering - Order Online</title>
+    <link rel="stylesheet" href="front page style.css">
+    <style>
+        .menu-item {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .menu-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        .menu-item button {
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #f8b400;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .menu-item button.remove-btn {
+            background-color: #ff5252;
+        }
+        .menu-item button:hover {
+            opacity: 0.9;
+        }
+        .quantity {
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+        #viewSummaryBtn {
+            margin: 2rem auto;
+            display: block;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        #viewSummaryBtn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <nav>
+            <h1>Canteen Food Ordering</h1>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- The login button will be hidden if the user is logged in -->
+                <li id="login-btn"><a href="login_page.html" class="login-btn">Login</a></li>
+                <!-- The username and logout button will be hidden if the user is not logged in -->
+                <li id="user-info">
+                    <span id="username"></span>
+                    <a href="login_page.html" id="logoutBtn" class="login-btn">Logout</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Menu Section -->
+    <section id="menu">
+        <h2>Our Menu</h2>
+        <div class="menu-grid" id="menuGrid"></div>
+        <button id="viewSummaryBtn" onclick="viewSummary()">Order Now</button>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <p>If you have any questions, please contact us at <strong>thifastfood@gmail.com</strong> or call us at <strong>123-456789</strong>.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Canteen Food Ordering. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+    <script>
+    const username = sessionStorage.getItem('username');
+
+if (username) {
+    // If the user is logged in, display username and logout button, hide login button
+    document.getElementById('login-btn').style.display = 'none';
+    document.getElementById('user-info').style.display = 'inline';
+    document.getElementById('username').textContent = `Hello, ${username}`;
+} else {
+    // If no user is logged in, display login button and hide user info
+    document.getElementById('login-btn').style.display = 'inline';
+    document.getElementById('user-info').style.display = 'none';
+}
+
+// Add event listener for the logout button
+document.getElementById('logoutBtn')?.addEventListener('click', () => {
+    // Clear session storage on logout
+    sessionStorage.removeItem('username');
+    window.location.href = 'login_page.html'; // Redirect to login page
+});
+
+function startItemTimer(itemName, timeLimit, lastUpdate, itemId) {
+    const now = new Date(); // Current time
+    const lastUpdateTime = new Date(lastUpdate); // Last update time from the database
+    const elapsedTime = Math.floor((now - lastUpdateTime) / 1000); // Time elapsed in seconds
+    let timeRemaining = timeLimit * 60 - elapsedTime; // Calculate remaining time in seconds
+  
+    const timerElement = document.getElementById(`${itemName}-timer`);
+    const menuItemElement = document.getElementById(`menu-item-${itemName}`);
+  
+    // If time has already expired, hide the item immediately
+    if (timeRemaining <= 0) {
+      timerElement.innerText = 'Time expired';
+      if (menuItemElement) {
+        menuItemElement.style.display = 'none'; // Hide the item in UI
+      }
+      // Optionally, you can remove the item from the DOM, not just hide it
+      // menuItemElement.remove();
+      return;
+    }
+  
+    // Otherwise, start the countdown
+    const timerInterval = setInterval(() => {
+      if (timeRemaining <= 0) {
+        clearInterval(timerInterval); // Stop the timer
+        timerElement.innerText = 'Time expired';
+        if (menuItemElement) {
+          menuItemElement.style.display = 'none'; // Hide item when time expires
+        }
+  
+        // Optionally, remove the item from DOM
+        // menuItemElement.remove();
+  
+      } else {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.innerText = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        timeRemaining--;
+      }
+    }, 1000); // Update every second
+  }
+// Fetch and Display Menu Items
+async function fetchMenu() {
+    try {
+        const response = await fetch('http://localhost:3000/menu');
+        const menuItems = await response.json();
+
+        const menuGrid = document.getElementById('menuGrid');
+        menuGrid.innerHTML = ''; // Clear existing items
+
+        menuItems.forEach(item => {
+            const isOutOfStock = item.stock === 0;
+
+            const menuItem = `
+                <div class="menu-item" id="menu-item-${item.item_name}" data-item="${item.item_name}" data-time-limit="${item.timelimit}">
+                    <img src="${item.imageurl}" alt="${item.item_name}" class="menu-image">
+                    <h3>${item.item_name}</h3>
+                    <p>Price: Rs ${item.price}</p>
+                    <div class="item-timer" id="${item.item_name}-timer"></div>
+                    <button onclick="addItem('${item.item_name}', ${item.price})" ${isOutOfStock ? 'disabled' : ''}>Add</button>
+                    <button class="remove-btn" onclick="removeItem('${item.item_name}')" ${isOutOfStock ? 'disabled' : ''}>Remove</button>
+                    <p class="quantity" id="${item.item_name}-quantity">Stock Available: ${isOutOfStock ? 'Unavailable' : item.stock}</p>
+                </div>
+            `;
+            menuGrid.insertAdjacentHTML('beforeend', menuItem);
+
+            // If the item has a time limit, start a timer
+            const timeLimit = item.timelimit || 0; // Default to 0 if no time limit is provided
+            if (timeLimit > 0 && item.last_update) {
+                startItemTimer(item.item_name, timeLimit, item.last_update);
+            }
+        });
+    } catch (error) {
+        console.error('Error fetching menu:', error);
+    }
+}
+
+// Load the menu on page load
+window.onload = fetchMenu;
+            
+const cart = {};
+
+function addItem(itemName, price) {
+    if (cart[itemName]) {
+        cart[itemName].quantity++;
+    } else {
+        cart[itemName] = { quantity: 1, price: price };
+    }
+    document.getElementById(`${itemName}-quantity`).innerText = `Quantity: ${cart[itemName].quantity}`;
+}
+
+function removeItem(itemName) {
+    if (cart[itemName] && cart[itemName].quantity > 0) {
+        cart[itemName].quantity--;
+    }
+    if (cart[itemName] && cart[itemName].quantity === 0) {
+        delete cart[itemName];
+    }
+    document.getElementById(`${itemName}-quantity`).innerText = cart[itemName]
+        ? `Quantity: ${cart[itemName].quantity}`
+        : "Quantity: 0";
+}
+
+function viewSummary() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "summary.html";
+}
+
+    </script>
+</body>
+</html>

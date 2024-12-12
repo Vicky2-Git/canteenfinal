@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canteen Food Ordering - Order Online</title>
+    <link rel="stylesheet" href="front page style.css" />
+    <style>
+      .menu-item {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        margin: 1rem;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .menu-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+      }
+      .menu-item button {
+        margin-top: 0.5rem;
+        padding: 0.5rem 1rem;
+        background-color: #f8b400;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .menu-item button.remove-btn {
+        background-color: #ff5252;
+      }
+      .menu-item button:hover {
+        opacity: 0.9;
+      }
+      .quantity {
+        margin-top: 0.5rem;
+        font-weight: bold;
+      }
+      #viewSummaryBtn {
+        margin: 2rem auto;
+        display: block;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      #viewSummaryBtn:hover {
+        background-color: #45a049;
+      }
+
+      .hero {
+        background-image: url("canteenhero.jpeg"); /* Replace with your image path */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .hero p {
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .hero .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #ff5722;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+
+      .hero .btn:hover {
+        background-color: #e64a19;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <nav>
+        <h1>Mezé Fagito</h1>
+        <ul>
+          <li><a href="homepage.html">Orders</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <!-- The login button will be hidden if the user is logged in -->
+
+          <li id="user-info">
+            <span id="username"></span>
+            <a href="login_page.html" id="logoutBtn" class="login-btn"
+              >Logout</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home">
+      <div class="hero">
+        <p>Authentic and best canteen Experience.</p>
+        <a href="menu.html" class="btn">Browse Menu</a>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>
+        If you have any questions, please contact us at
+        <strong>Mezéfagito@gmail.com</strong> or call us at
+        <strong>123-456789</strong>.
+      </p>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 Canteen Food Ordering. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

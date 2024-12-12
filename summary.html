@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="front_page_style.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+      .summary {
+        max-width: 600px;
+        margin: 2rem auto;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 1rem;
+        text-align: center;
+        background-color: #fff;
+      }
+      .summary table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+      .summary th,
+      .summary td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+      }
+      .summary h3 {
+        margin-bottom: 1rem;
+      }
+      .btn {
+        margin-top: 1rem;
+        padding: 1rem 2rem;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+      .btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="summary">
+      <h3>Order Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="summaryTable">
+          <!-- Items will be dynamically populated -->
+        </tbody>
+      </table>
+      <p>
+        <strong>Total: Rs <span id="totalAmount">0</span></strong>
+      </p>
+      <button class="btn" onclick="proceedToPayment()">Proceed to Payment</button>
+    </section>
+
+    <script>
+      function loadSummary() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || {};
+        const summaryTable = document.getElementById("summaryTable");
+        const totalAmount = document.getElementById("totalAmount");
+        let total = 0;
+
+        if (Object.keys(cart).length === 0) {
+          alert("Cart is empty. Please select items from the menu.");
+          window.location.href = "menu.html";
+        }
+
+        for (const item in cart) {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${item}</td>
+                    <td>${cart[item].quantity}</td>
+                    <td>Rs ${cart[item].quantity * cart[item].price}</td>
+                `;
+          summaryTable.appendChild(row);
+          total += cart[item].quantity * cart[item].price;
+        }
+
+        totalAmount.innerText = total;
+      }
+
+      async function proceedToPayment() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || {};
+        if (Object.keys(cart).length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+
+        const orderDetails = {
+          username: sessionStorage.getItem("username") || "guest",
+          items: cart,
+          totalAmount: document.getElementById("totalAmount").innerText,
+          date: new Date().toISOString(),
+        };
+
+        try {
+          const response = await fetch("http://localhost:3000/place-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderDetails),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert("Order placed successfully!");
+            localStorage.setItem(
+              "orderData",
+              JSON.stringify({ orderId: result.orderId, items: cart })
+            );
+            localStorage.removeItem("cart");
+            window.location.href = "confirmation.html";
+          } else {
+            alert(`Order failed: ${result.message}`);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Something went wrong. Please try again.");
+        }
+      }
+
+      async function proceedToPayment() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || {};
+        if (Object.keys(cart).length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+
+        const orderDetails = {
+          username: sessionStorage.getItem("username") || "guest",
+          items: cart,
+          totalAmount: document.getElementById("totalAmount").innerText,
+          date: new Date().toISOString(),
+        };
+
+        try {
+          const response = await fetch("http://localhost:3000/place-order", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(orderDetails),
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            alert("Order placed successfully!");
+            localStorage.setItem(
+              "orderData",
+              JSON.stringify({ orderId: result.orderId, items: cart })
+            );
+            localStorage.removeItem("cart");
+            window.location.href = "confirmation.html";
+          } else {
+            alert(`Order failed: ${result.message}`);
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          alert("Something went wrong. Please try again.");
+        }
+      }
+
+      window.onload = loadSummary;
+    </script>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Confirmation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f9f9f9;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 2rem auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+      }
+      .container h2 {
+        text-align: center;
+        color: #4caf50;
+        margin-bottom: 1.5rem;
+      }
+      .container p {
+        margin: 0.5rem 0;
+      }
+      .details table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .details th,
+      .details td {
+        border: 1px solid #ddd;
+        padding: 0.75rem;
+        text-align: left;
+      }
+      .details th {
+        background-color: #f4f4f4;
+      }
+      .total {
+        text-align: right;
+        font-weight: bold;
+        margin-top: 1rem;
+      }
+      .btn {
+        display: block;
+        margin: 1rem auto;
+        padding: 1rem 2rem;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        text-align: center;
+      }
+      .btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Order Confirmed!</h2>
+      <p>Thank you for your order. Your order has been successfully placed.</p>
+      <p><strong>Order ID:</strong> <span id="orderId">ORD-12345</span></p>
+      <div class="details">
+        <table>
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>Quantity</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody id="orderDetails"></tbody>
+        </table>
+      </div>
+      <p class="total">Total: Rs <span id="totalAmount">0</span></p>
+      <a href="menu.html" class="btn">Continue Shopping</a>
+    </div>
+    <script>
+      const orderData = JSON.parse(localStorage.getItem("orderData"));
+
+      if (orderData) {
+        // Set Order ID
+        document.getElementById("orderId").innerText = orderData.orderId;
+
+        const orderDetailsTable = document.getElementById("orderDetails");
+        const totalAmountSpan = document.getElementById("totalAmount");
+        let total = 0;
+
+        // Loop through items in the order
+        for (const itemName in orderData.items) {
+          const item = orderData.items[itemName];
+          const row = document.createElement("tr");
+          row.innerHTML = `
+              <td>${itemName}</td>
+              <td>${item.quantity}</td>
+              <td>Rs ${item.quantity * item.price}</td>
+            `;
+          orderDetailsTable.appendChild(row);
+          total += item.quantity * item.price;
+        }
+
+        // Set the total amount
+        totalAmountSpan.innerText = total;
+      } else {
+        alert("No order details found. Redirecting to home page.");
+        window.location.href = "menu.html";
+      }
+    </script>
+  </body>
+</html>

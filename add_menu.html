@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu Item</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"], input[type="number"], input[type="file"] {
+            width: calc(100% - 20px);
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message, .success-message {
+            text-align: center;
+            font-size: 14px;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .error-message {
+            color: white;
+            background-color: #e74c3c;
+        }
+
+        .success-message {
+            color: white;
+            background-color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <form id="menu-form">
+        <h2>Add Menu Item</h2>
+
+        <label>Menu ID:</label>
+        <input type="number" name="menu_id" required>
+
+        <label>Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Price:</label>
+        <input type="number" name="price" required>
+
+        <label>Total Quantity:</label>
+        <input type="number" name="tot_quantity" required>
+
+        <label>Quantity:</label>
+        <input type="text" name="quantity" required>
+
+        <label>Type:</label>
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="type" value="Veg" required> Veg
+            </label>
+            <label>
+                <input type="radio" name="type" value="Non-Veg" required> Non-Veg
+            </label>
+        </div>
+
+        <label>Rating:</label>
+        <input type="number" name="rating" step="0.1">
+
+
+        <button type="submit">Add Menu Item</button>
+
+        <div id="message" class="error-message" style="display: none;"></div>
+    </form>
+
+    <script>
+        document.getElementById("menu-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const messageDiv = document.getElementById("message");
+
+            try {
+                const response = await fetch("http://localhost:3000/menu/add", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    messageDiv.textContent = "Menu item added successfully!";
+                    messageDiv.className = "success-message";
+                    messageDiv.style.display = "block";
+                    event.target.reset();
+                } else {
+                    messageDiv.textContent = "Failed to add menu item: " + data.message;
+                    messageDiv.className = "error-message";
+                    messageDiv.style.display = "block";
+                }
+            } catch (error) {
+                messageDiv.textContent = "An error occurred while adding the menu item.";
+                messageDiv.className = "error-message";
+                messageDiv.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

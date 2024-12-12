@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Menu Item</title>
+    <link rel="stylesheet" href="admin.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+      }
+
+      header {
+        background-color: #ff5722;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      nav {
+        background-color: #333;
+        padding: 10px;
+      }
+
+      nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin: 0 20px;
+      }
+
+      nav ul li a {
+        color: white;
+        text-decoration: none;
+        font-size: 16px;
+      }
+
+      nav ul li a:hover {
+        text-decoration: underline;
+      }
+
+      .form-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 400px;
+        margin: 30px auto;
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      #responseMessage {
+        margin-top: 20px;
+        text-align: center;
+      }
+
+      section {
+        padding: 20px;
+        text-align: center;
+        background-color: #f4f4f9;
+        margin-top: 40px;
+      }
+      #contact {
+        background-color: #ffffff;
+        padding: 40px;
+        margin-top: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 80%;
+        max-width: 600px;
+        margin: 40px auto;
+        text-align: center;
+      }
+
+      #contact h2 {
+        font-size: 24px;
+        color: #ff5722;
+        margin-bottom: 20px;
+      }
+
+      #contact p {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      #contact strong {
+        font-weight: bold;
+        color: #4caf50;
+      }
+
+      /* Footer Styling */
+      footer {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      footer a {
+        color: #4caf50;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+
+    <header>
+      <h1>Canteen Food ordering - Admin Dashboard</h1>
+    </header>
+
+    <nav>
+      <ul>
+        <li><a href="update_menu.html">Product Management</a></li>
+        <li><a href="view_order.html">Order Management</a></li>
+        <li><a href="#reports">Generate Reports</a></li>
+        <li><a href="add_menuItem.html">Add Menu</a></li>
+        <!-- The login button will be hidden if the user is logged in -->
+        <li id="login-btn">
+          <a href="adminlogin.html" class="login-btn">Login</a>
+        </li>
+        <!-- The username and logout button will be hidden if the user is not logged in -->
+        <li id="user-info">
+          <span id="username"></span>
+          <a href="adminlogin.html" id="logoutBtn" class="login-btn">Logout</a>
+        </li>
+      </ul>
+    </nav>
+
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <p>
+        If you have any questions, please contact us at
+        <strong>canteenfood@gmail.com</strong> or call us at
+        <strong>997-644-4756</strong>.
+      </p>
+    </section>
+
+    <footer>
+      <p>&copy; 2024 Canteen. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const username = sessionStorage.getItem("admin");
+
+      if (username) {
+        // If the user is logged in, display username and logout button, hide login button
+        document.getElementById("login-btn").style.display = "none";
+        document.getElementById("user-info").style.display = "inline";
+        document.getElementById("username").textContent = `Hello, ${username}`;
+      } else {
+        // If no user is logged in, display login button and hide user info
+        document.getElementById("login-btn").style.display = "inline";
+        document.getElementById("user-info").style.display = "none";
+      }
+
+      // Add event listener for the logout button
+      document.getElementById("logoutBtn")?.addEventListener("click", () => {
+        // Clear session storage on logout
+        sessionStorage.removeItem("username");
+        window.location.href = "adminlogin.html"; // Redirect to login page
+      });
+
+      document
+        .getElementById("menuForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const menuItem = {
+            menu_id: document.getElementById("menu_id").value,
+            name: document.getElementById("name").value,
+            price: document.getElementById("price").value,
+            tot_quantity: document.getElementById("tot_quantity").value,
+            quantity: document.getElementById("quantity").value,
+            type: document.getElementById("type").value,
+            rating: document.getElementById("rating").value,
+          };
+
+          fetch("http://localhost:3000/add-menu-item", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(menuItem),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById(
+                "responseMessage"
+              ).innerHTML = `<p>Item added successfully! ID: ${data.menu_id}</p>`;
+            })
+            .catch((error) => {
+              document.getElementById(
+                "responseMessage"
+              ).innerHTML = `<p>Error: ${error}</p>`;
+            });
+        });
+
+      async function checklogin() {
+        const username = sessionStorage.getItem("admin");
+        if (username == null) {
+          alert("Add items after login");
+          window.location.href = "adminlogin.html";
+        }
+      }
+
+      window.onload = checklogin;
+    </script>
+  </body>
+</html>
