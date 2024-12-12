@@ -97,7 +97,7 @@
         totalAmount.innerText = total;
       }
 
-      async function proceedToPayment() {
+      /*async function proceedToPayment() {
         const cart = JSON.parse(localStorage.getItem("cart")) || {};
         if (Object.keys(cart).length === 0) {
           alert("Your cart is empty!");
@@ -137,7 +137,7 @@
           console.error("Error:", error);
           alert("Something went wrong. Please try again.");
         }
-      }
+      }*/
 
       async function proceedToPayment() {
         const cart = JSON.parse(localStorage.getItem("cart")) || {};
